@@ -20,11 +20,13 @@ int main(void)
     int data3 = 30;
     int data4 = 40;
 
-    InsertNodeAtBeginning(&head, &data2);
     InsertNodeAtBeginning(&head, &data);
     InsertNodeAtBeginning(&head, &data2);
-    InsertNodeAtEnd(&head, &data3);
-    InsertNodeAtIndex(&head, &data4, 0);
+    InsertNodeAtBeginning(&head, &data3);
+
+    Reverse(&head);
+
+    // DeleteNodeAtIndex(&head, 0);
 
     void (*print)(void*, bool) = PrintInt;
     PrintList(head, print);

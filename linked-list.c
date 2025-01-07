@@ -65,9 +65,64 @@ void InsertNodeAtIndex(Node **head, void* data, const int index)
     Node* temp = *head;
     int currentIndex = 0;
 
-    
+    // Find the node at position specified by the index
+    while (temp && currentIndex < index)
+    {
+        currentIndex++;
+        temp = temp->next;
+    }
 
+    // If an incorrect index is supplied bail here
+    if (temp == NULL)
+    {
+        free(node);
+        return;
+    }
 
+    node->next = temp->next;
+    temp->next = node;
+}
+
+void DeleteNodeAtIndex(Node **head, const int index)
+{
+    if (index == 0)
+    {
+        Node* old = *head;
+        (*head) = (*head)->next;
+        free(old);
+    }
+
+    Node* temp = *head;
+    int currentIndex = 0;
+
+    // This gets us to the node right before the one we want to delete
+    while (temp && currentIndex < index-1)
+    {
+        temp = temp->next;
+        currentIndex++;
+    }
+
+    if (temp == NULL)
+        return;
+
+    Node* nodeToDelete = temp->next;
+    temp->next = nodeToDelete->next;
+    free(nodeToDelete);
+}
+
+void Reverse(Node **head)
+{
+    Node* current = *head;
+    Node* prev = NULL;
+    while (current != NULL)
+    {
+        Node* next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    *head = prev;
 }
 
 void DestroyList(Node **head)

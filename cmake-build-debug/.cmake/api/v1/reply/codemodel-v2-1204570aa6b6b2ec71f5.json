@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/yanni/CLionProjects/linked-list/cmake-build-debug",
-		"source" : "C:/Users/yanni/CLionProjects/linked-list"
+		"build" : "C:/Users/Yannik/CLionProjects/linked-list/cmake-build-debug",
+		"source" : "C:/Users/Yannik/CLionProjects/linked-list"
 	},
 	"version" : 
 	{

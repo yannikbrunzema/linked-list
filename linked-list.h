@@ -21,10 +21,13 @@ void InsertNodeAtEnd(Node **head, void* data);
 void InsertNodeAtIndex(Node **head, void* data, const int index);
 
 // Deletes a specified node from the list
-void DeleteNode(Node **head, Node* node);
+void DeleteNodeAtIndex(Node **head, const int index);
 
 // Prints the linked list
 void PrintList(const Node* head, void (*print)(void*, bool));
+
+// Reverses the order of the list
+void Reverse(Node **head);
 
 // Destroys the list
 void DestroyList(Node **head);
