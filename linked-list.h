@@ -8,9 +8,6 @@ typedef struct Node
     struct Node* next;
 } Node;
 
-// Creates a node, and allocates it on the heap
-Node* CreateNode(void *data);
-
 // Insert a node at the beginning of the list
 void InsertNodeAtBeginning(Node **head, void* data);
 

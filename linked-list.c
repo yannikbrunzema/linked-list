@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "linked-list.h"
 
-Node* CreateNode(void *data)
+static Node* CreateNode(void *data)
 {
     Node* node = (Node*)malloc(sizeof(Node));
     node->data = data;
