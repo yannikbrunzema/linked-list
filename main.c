@@ -14,23 +14,30 @@ void PrintInt(void* data, const bool isLast)
 
 int main(void)
 {
-    Node* head = NULL;
     int data = 10;
     int data2 = 20;
     int data3 = 30;
-    int data4 = 40;
 
-    InsertNodeAtBeginning(&head, &data);
-    InsertNodeAtBeginning(&head, &data2);
-    InsertNodeAtBeginning(&head, &data3);
-
-    Reverse(&head);
-
-    // DeleteNodeAtIndex(&head, 0);
-
+    int test = 69;
     void (*print)(void*, bool) = PrintInt;
-    PrintList(head, print);
+
+    LinkedList* list = CreateLinkedList();
+    InsertNodeAtBeginning(list, &data);
+    InsertNodeAtBeginning(list, &data2);
+    InsertNodeAtEnd(list, &data3);
+    InsertNodeAtEnd(list, &data3);
+    InsertNodeAtEnd(list, &data3);
+    PrintList(list, print);
+    printf("\n");
+    InsertNodeAfterIndex(list,&test,2);
+    DeleteNodeAtPosition(list, 3);
+    PrintList(list, print);
+
+
+
+
+
     fflush(stdout);
-    DestroyList(&head);
+    DestroyLinkedList(list);
     return 0;
 }

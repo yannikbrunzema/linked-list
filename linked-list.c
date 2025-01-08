@@ -11,8 +11,9 @@ static Node* CreateNode(void *data)
     return node;
 }
 
-void PrintList(const Node* head, void (*print)(void*, bool))
+void PrintList(const LinkedList* list, void (*print)(void*, bool))
 {
+    Node* head = list->head;
     while (head != NULL)
     {
         if (head->next == NULL)
@@ -23,119 +24,137 @@ void PrintList(const Node* head, void (*print)(void*, bool))
     }
 }
 
-void InsertNodeAtBeginning(Node **head, void* data)
+LinkedList* CreateLinkedList()
 {
-    Node* newHead = CreateNode(data);
-    newHead->next = (*head);
-    *head = newHead;
+    LinkedList* list = (LinkedList*)malloc(sizeof(LinkedList));
+    list->head = NULL;
+    list->tail = NULL;
+    return list;
 }
 
-void InsertNodeAtEnd(Node **head, void* data)
+void InsertNodeAtBeginning(LinkedList *list, void* data)
 {
-    Node* node = CreateNode(data);
+    Node* newNode = CreateNode(data);
 
-    // If the list is empty, make the new node the head
-    if (*head == NULL)
+    if (list->head == NULL)
     {
-        *head = node;
+        list->head = newNode;
+        list->tail = newNode;
         return;
     }
 
-    Node* temp = *head;
-
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-
-    temp->next = node;
+    newNode->next = list->head;
+    list->head = newNode;
 }
 
-void InsertNodeAtIndex(Node **head, void* data, const int index)
+void InsertNodeAtEnd(LinkedList *list, void* data)
 {
     Node* node = CreateNode(data);
+
+    if (list->tail == NULL)
+    {
+        list->head = node;
+        list->tail = node;
+        return;
+    }
+
+    list->tail->next = node;
+    list->tail = node;
+}
+
+void InsertNodeAfterIndex(LinkedList *list, void* data, int index)
+{
+    if (!list)
+        return;
 
     if (index == 0)
     {
-        node->next = *head;
-        *head = node;
+        InsertNodeAtBeginning(list, data);
         return;
     }
 
-    Node* temp = *head;
     int currentIndex = 0;
+    Node* nodeToInsert = CreateNode(data);
+    Node* currNode = list->head;
 
-    // Find the node at position specified by the index
-    while (temp && currentIndex < index)
+    while (currNode && currentIndex < index)
     {
+        currNode = currNode->next;
         currentIndex++;
-        temp = temp->next;
     }
 
-    // If an incorrect index is supplied bail here
-    if (temp == NULL)
+    // If the supplied index is bad
+    if (currNode == NULL)
     {
+        free(nodeToInsert);
+        return;
+    }
+
+    Node* nextNode = currNode->next;
+    currNode->next = nodeToInsert;
+    nodeToInsert->next = nextNode;
+}
+
+void DeleteNodeAtPosition(LinkedList *list, int index)
+{
+    if (!list)
+        return;
+    if (index == 0)
+    {
+        Node* secondNode = list->head->next;
+        free(list->head);
+        list->head = secondNode;
+        return;
+    }
+
+    int currentIndex = 0;
+    Node* currNode = list->head;
+
+    // Goto the node before the one we want to delete
+    while (currNode && currentIndex < index-1)
+    {
+        currNode = currNode->next;
+        currentIndex++;
+    }
+
+    if (currNode == NULL)
+        return;
+
+    Node* nextAfterDeleted = currNode->next->next;
+    free(currNode->next);
+    currNode->next = nextAfterDeleted;
+}
+
+void DestroyLinkedList(LinkedList *list)
+{
+    if (!list)
+        return;
+
+    Node* node = list->head;
+    while (node != NULL)
+    {
+        Node *temp = (node)->next;
         free(node);
-        return;
+        node = temp;
     }
 
-    node->next = temp->next;
-    temp->next = node;
+    list->head = NULL;
+    list->tail = NULL;
+
+    free(list);
 }
 
-void DeleteNodeAtIndex(Node **head, const int index)
+void ReverseLinkedList(LinkedList *list)
 {
-    if (index == 0)
-    {
-        Node* old = *head;
-        (*head) = (*head)->next;
-        free(old);
-    }
-
-    Node* temp = *head;
-    int currentIndex = 0;
-
-    // This gets us to the node right before the one we want to delete
-    while (temp && currentIndex < index-1)
-    {
-        temp = temp->next;
-        currentIndex++;
-    }
-
-    if (temp == NULL)
+    if (!list)
         return;
 
-    Node* nodeToDelete = temp->next;
-    temp->next = nodeToDelete->next;
-    free(nodeToDelete);
-}
+    Node* current = list->head;
+    Node* previous = NULL;
 
-void Reverse(Node **head)
-{
-    Node* current = *head;
-    Node* prev = NULL;
     while (current != NULL)
     {
-        Node* next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
+        
     }
-
-    *head = prev;
-}
-
-void DestroyList(Node **head)
-{
-    if (!head)
-        return;
-
-    while (*head)
-    {
-        Node *temp = (*head)->next;
-        free(*head);
-        *head = temp;
-    }
-    *head = NULL;
 }
 

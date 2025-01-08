@@ -8,25 +8,34 @@ typedef struct Node
     struct Node* next;
 } Node;
 
-// Insert a node at the beginning of the list
-void InsertNodeAtBeginning(Node **head, void* data);
+typedef struct LinkedList
+{
+    Node* head;
+    Node* tail;
+} LinkedList;
 
-// Insert a node at the end of the list
-void InsertNodeAtEnd(Node **head, void* data);
+// Creates a new linked list
+LinkedList* CreateLinkedList();
 
-// Insert a node at a specified index of the list
-void InsertNodeAtIndex(Node **head, void* data, const int index);
+// Destroys the linked list
+void DestroyLinkedList(LinkedList* list);
 
-// Deletes a specified node from the list
-void DeleteNodeAtIndex(Node **head, const int index);
+// Inserts a node at the beginning of the list
+void InsertNodeAtBeginning(LinkedList* list, void* data);
+
+// Inserts a node at the end of the list
+void InsertNodeAtEnd(LinkedList* list, void* data);
+
+// Inserts a node at a specified index in the list
+void InsertNodeAfterIndex(LinkedList *list, void* data, int index);
+
+// Deletes a node at a specified index in the list
+void DeleteNodeAtPosition(LinkedList *list, int index);
 
 // Prints the linked list
-void PrintList(const Node* head, void (*print)(void*, bool));
+void PrintList(const LinkedList* list, void (*print)(void*, bool));
 
-// Reverses the order of the list
-void Reverse(Node **head);
-
-// Destroys the list
-void DestroyList(Node **head);
+// Reverses the linked list
+void Reverse(LinkedList* list);
 
 #endif //LINKED_LIST_H
