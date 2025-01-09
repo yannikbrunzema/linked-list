@@ -36,6 +36,6 @@ void DeleteNodeAtPosition(LinkedList *list, int index);
 void PrintList(const LinkedList* list, void (*print)(void*, bool));
 
 // Reverses the linked list
-void Reverse(LinkedList* list);
+void ReverseLinkedList(LinkedList* list);
 
 #endif //LINKED_LIST_H

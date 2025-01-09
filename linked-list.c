@@ -13,6 +13,9 @@ static Node* CreateNode(void *data)
 
 void PrintList(const LinkedList* list, void (*print)(void*, bool))
 {
+    if (!list)
+        return;
+
     Node* head = list->head;
     while (head != NULL)
     {
@@ -34,6 +37,9 @@ LinkedList* CreateLinkedList()
 
 void InsertNodeAtBeginning(LinkedList *list, void* data)
 {
+    if (!list)
+        return;
+
     Node* newNode = CreateNode(data);
 
     if (list->head == NULL)
@@ -49,6 +55,9 @@ void InsertNodeAtBeginning(LinkedList *list, void* data)
 
 void InsertNodeAtEnd(LinkedList *list, void* data)
 {
+    if (!list)
+        return;
+
     Node* node = CreateNode(data);
 
     if (list->tail == NULL)
@@ -92,18 +101,28 @@ void InsertNodeAfterIndex(LinkedList *list, void* data, int index)
 
     Node* nextNode = currNode->next;
     currNode->next = nodeToInsert;
+
+    if (currNode == list->tail)
+        list->tail = nodeToInsert;
+
     nodeToInsert->next = nextNode;
 }
 
 void DeleteNodeAtPosition(LinkedList *list, int index)
 {
-    if (!list)
+    if (!list || !list->head)
         return;
+
     if (index == 0)
     {
         Node* secondNode = list->head->next;
         free(list->head);
         list->head = secondNode;
+
+        // If this is the only node, update the tail to null
+        if (list->head == NULL)
+            list->tail = NULL;
+
         return;
     }
 
@@ -117,12 +136,17 @@ void DeleteNodeAtPosition(LinkedList *list, int index)
         currentIndex++;
     }
 
-    if (currNode == NULL)
+    // Make sure the node we want to delete actually exists
+    if (currNode == NULL || currNode->next == NULL)
         return;
 
-    Node* nextAfterDeleted = currNode->next->next;
-    free(currNode->next);
-    currNode->next = nextAfterDeleted;
+    Node* toDelete = currNode->next;
+    currNode->next = toDelete->next;
+
+    if (toDelete == list->tail)
+        list->tail = currNode;
+
+    free(toDelete);
 }
 
 void DestroyLinkedList(LinkedList *list)
@@ -142,19 +166,27 @@ void DestroyLinkedList(LinkedList *list)
     list->tail = NULL;
 
     free(list);
+    list = NULL;
 }
 
 void ReverseLinkedList(LinkedList *list)
 {
-    if (!list)
+    if (!list || !list->head)
         return;
 
     Node* current = list->head;
     Node* previous = NULL;
+    Node* nextNode = NULL;
 
     while (current != NULL)
     {
-        
+        nextNode = current->next;
+        current->next = previous;
+        previous = current;
+        current = nextNode;
     }
+    
+    list->tail = list->head;
+    list->head = previous;
 }
 
